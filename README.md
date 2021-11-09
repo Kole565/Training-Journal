@@ -1,13 +1,16 @@
 ### Training Journal App
 
-#### Intensions:
-Training Journal it's my school project.
+#### Description:
+Training Journal it's my school project that track you trainings.
+
+#### Goal:
+Goal - help people track and organaise trainings.
 
 #### Installation:
 Project don't completed.
 
 #### Usage:
-Open 'scripts' folder; choose script to run; use following instructions
+Open 'scripts' folder; choose script to run; use following instructions.
 
 #### State:
 Raw. In development.
