@@ -2,40 +2,38 @@ class Training():
 	
 	"""Training session
 
+	Handle one training with properties. (watch __init__)
+
 	"""
 	
 	def __init__(self, **data):
-		self.time = data.get("time")
-		self.distance = data.get("distance")		
+		# TODO: 
+		# - add duration, date convert (to time_date types)
+		# - add runs support
+		# - add series
+		"""Construct training object
+
+		Attributes:
+		:name     - custom train name
+		:duration - how long did train last (1:20:30)
+		:date     - when did the train take place
+		:note     - what user think about this train
+
+		"""
+		self.name     = data.get("name")
+		self.duration = data.get("duration")
+		self.date     = data.get("date")
+		self.note     = data.get("note")
 	
-	def formated_time(self):
-		time_list = reversed(list(map(int, self.time.split(":"))))
-		time_form = {
-			0: "sec",
-			1: "min",
-			2: "h"
-		}
-
-		ret = ""
-		i = 0
-		for time_item in time_list:
-			if time_item != 0:
-				ret = "{0} {1} ".format(time_item, time_form[i]) + ret
-			i += 1
+	def get_save(self):
+		"""Return sql statement, values, that save current training."""
+		stm = """	INSERT INTO trainings(name,duration,date,note)
+					VALUES(?,?,?,?)"""
+		values = (
+			getattr(self, "name", None),
+			getattr(self, "duration", None),
+			getattr(self, "date", None),
+			getattr(self, "note", None),
+		)
 		
-		return ret.strip()
-	
-	def formated_distance(self):
-		ret = ""
-
-		if self.distance < 1000:
-			ret += "{0} m".format(self.distance)
-		elif self.distance % 1000 == 0:
-			ret += "{0} km".format(self.distance // 1000)			
-		else:	
-			ret += "{0} km {1} m".format(self.distance // 1000,
-														self.distance % 1000)
-		
-		return ret
-
-
+		return (stm, values)

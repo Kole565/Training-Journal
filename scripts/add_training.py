@@ -25,8 +25,8 @@ while add_next:
 	print("Name (train title): (any text)")
 	data["name"] = check_inp(input())
 	
-	print("Time (train duration): (1:20:30)")
-	data["time"] = check_inp(input())
+	print("Duration (train duration): (1:20:30)")
+	data["duration"] = check_inp(input())
 
 	print("Distance (for run; optional): (in meters)")
 	data["distance"] = check_inp(input())

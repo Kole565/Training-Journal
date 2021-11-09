@@ -10,18 +10,35 @@ class TrainingsController():
 
 	"""
 
+	path_db = "./db"
+
 	def __init__(self, db=""):
+		"""Initialize controller
+		
+		Attributes:
+		self.trainings - local collection of trainings
+
+		"""
 		self.trainings = []
-		self.count = 0
 
 		if db:
 			self.open_connection(db)
 			self.create_cursor()
 	
+	def count(self):
+		"""Return local collection size."""
+		return len(self.trainings)
+	
 	def create(self, **data):
 		"""New training."""
 		self.trainings.append(Training(**data))
-		self.count += 1
+	
+	def delete(self, ind):
+		"""Delete train by ind."""
+		try:
+			del self.trainings[ind]
+		except IndexError:
+			print("Train by ind {0} not founded.".format(ind))
 	
 	def all_local(self):
 		"""Print controller collection."""
@@ -31,64 +48,54 @@ class TrainingsController():
 			
 		return ret
 	
-	def show_local(self, ind):
+	def show(self, ind):
 		"""Print training by index.
 		
 		Arguments:
-		ind -- training index in collection
+		ind -- training index in db
 
 		"""
-		ret = ""
-		
-		ret += "Time: {0}\n".format(self.trainings[ind].formated_time())
-		ret += "Distance: {0}\n\n".format(self.trainings[ind].formated_distance())
-
-		return ret
+		pass
+	
+	def clear(self):
+		"""Clear local storage."""
+		self.trainings = []
+	
+	# 
+	# DB operate
+	# 
 	
 	def open_connection(self, name):
-		rel_path = "./db"
-		self.current_connection = sqlite3.connect(
-											"{0}/{1}".format(rel_path, name))
+		"""Open db file with name."""
+		try:
+			self.current_connection = sqlite3.connect(
+												"{0}/{1}".format(self.path_db, name))
+		except Exception as e:
+			print(e)
 	
 	def close_connection(self):
+		"""Close db file."""
 		self.current_connection.close()
 	
 	def create_cursor(self):
+		"""Create cursor for db requests."""
 		self.current_cursor = self.current_connection.cursor()
 	
-	def sql_execute(self, stm):
-		self.current_cursor.execute(stm)
+	def sql_execute(self, stm_data):
+		"""Execute sqlite statement."""
+		self.current_cursor.execute(stm_data[0], stm_data[1])
 	
-	def create_table(self, name, colomns):
-		"""Create table from attrs
+	def commit(self):
+		"""Commit changes to db."""
+		self.current_connection.commit()
+	
+	def save(self):
+		"""Push local collection to db."""
+		if self.count() == 0: return "Nothing to save."
 
-		Arguments:		
-		name -- table name
-		colomns -- [
-			{
-				"name": "colomn_name",
-				"type": "colomn_data_type",
-
-				"key": "is key?",
-				"null": "is null?",
-				"uniq": "is uniq?",
-			},
-		]
-
-		"""
-		stm = "CREATE TABLE [IF NOT EXISTS] "
-		stm += "{0} ".format(name)
-		stm += "(\n\t"
-		for colomn in colomns:
-			stm += "{0} ".format(colomn["name"])
-			stm += "{0} ".format(colomn["type"])
-
-			if colomn["key"]:		stm += "KEY "
-			if not colomn["null"]:	stm += "NOT NULL "
-			if colomn["uniq"]:		stm += "UNIQUE "
-
-			stm += ",\n"
-
-		stm += ");"
-
-		self.sql_execute(stm)
+		for item in self.trainings:
+			self.sql_execute(item.get_save())
+		self.commit()
+		self.clear()
+		
+		return

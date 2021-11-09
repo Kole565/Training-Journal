@@ -8,35 +8,29 @@ sys.path.append(parent_dir)
 from lib.controllers.trainings_controller import TrainingsController
 
 class TestTrainingController(unittest.TestCase):
-
-	def setUp(self):
-		self.cont = TrainingsController()
 		
-		self.cont.create(time="30", distance=150)
-		self.cont.create(time="10:00", distance=2000)
-		self.cont.create(time="15:00", distance=2500)
+	def test_count(self):
+		"""Test collection size counter."""
+		cont = TrainingsController()
 		
-	def test_count(self):		
-		self.assertEqual(self.cont.count, 3)
+		self.assertEqual(cont.count(), 0)
+		cont.create(name="Collection Size", duration="10:00")
+		self.assertEqual(cont.count(), 1)
+		cont.delete(0)
+		self.assertEqual(cont.count(), 0)
 	
-	def test_all_local(self):
-		compare_str = ""
-		compare_str += "Time: 30 sec\nDistance: 150 m\n\n"
-		compare_str += "Time: 10 min\nDistance: 2 km\n\n"
-		compare_str += "Time: 15 min\nDistance: 2 km 500 m\n\n"
+	def test_save(self):
+		"""Test push local strorage feature."""
+		cont = TrainingsController("testDB.db")
+		self.assertEqual(cont.save(), "Nothing to save.")
+		
+		train = cont.create(name="Test DB Train", duration="42:00")
+		self.assertEqual(cont.count(), 1)
+		self.assertFalse(cont.save())     # Controller return 0 if success
+		self.assertEqual(cont.count(), 0)
 
-		self.assertEqual(self.cont.all_local(), compare_str)
-
-		self.assertEqual(self.cont.show_local(0), 
-		"Time: 30 sec\nDistance: 150 m\n\n"
-		)
-		self.assertEqual(self.cont.show_local(1), 
-		"Time: 10 min\nDistance: 2 km\n\n"
-		)
-		self.assertEqual(self.cont.show_local(2), 
-		"Time: 15 min\nDistance: 2 km 500 m\n\n"
-		)
-
+		cont.close_connection() # Connection start automaticly, but close - not
+		
 		
 if __name__ == "__main__":
 	unittest.main()
