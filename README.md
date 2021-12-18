@@ -4,7 +4,7 @@
 Training Journal it's my school project that track you trainings.
 
 #### Goal:
-Goal - help people track and organaise trainings.
+Goal - help people track and organaize trainings.
 
 #### Installation:
 Project don't completed.
