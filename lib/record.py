@@ -6,7 +6,7 @@ class Record():
 
     root = os.path.join(os.path.dirname(__file__), "..")
     path_to_db_folder = root + "/db"
-    db_format = ".sqlite3"
+    db_format = ".db"
 
     def __init__(self, db, table, record):
         self.db = db
