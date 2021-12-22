@@ -1,4 +1,5 @@
-import os, sys
+import os
+import sys
 
 PROJECT_ROOT = os.path.join(os.path.dirname(__file__), "..")
 sys.path.append(PROJECT_ROOT)
@@ -15,6 +16,10 @@ class Run(Training):
         super().__init__(values)
         
         self.type = "run"
+    
+    @staticmethod
+    def fields():
+        return Training.fields() + ["duration", "distance"]
     
     def values(self):
         return super().values() + [self.duration, self.distance]

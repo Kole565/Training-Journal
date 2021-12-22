@@ -6,6 +6,10 @@ class Training():
         self.description = values["description"]
 
         self.type = "other"
+    
+    @staticmethod
+    def fields():
+        return ["date", "time", "description"]
 
     def values(self):
         return [self.date, self.time, self.description]
