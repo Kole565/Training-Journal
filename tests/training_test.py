@@ -29,15 +29,12 @@ class TestTraining(unittest.TestCase):
 
     def test_init(self):
         self.assertTrue(self.training)
-    
-    def test_fields(self):
-        self.assertEqual(len(self.training.fields()), 3)
         
     def test_values(self):
         self.assertEqual(len(self.training.values()), 3)
     
-    def test_placeholders_num(self):
-        self.assertEqual(self.training.placeholders_num(), 3)
+    def test_get_arguments_num(self):
+        self.assertEqual(self.training.get_arguments_num(), 3)
 
 
 # if __name__ == "__main__":

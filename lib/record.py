@@ -14,8 +14,8 @@ class Record():
         self.record = record
     
     def save(self):
-        stm = self.record.get_save_stm(self.table)
-        values = self.record.get_save_values()
+        stm = self.record.get_saving_stm(self.table)
+        values = self.record.values()
 
         self.open_connection()
         self.init_cursor()

@@ -55,5 +55,5 @@ class TestRecord(unittest.TestCase):
         self.destroy_temp_db_if_exist()
         
 
-if __name__ == "__main__":
-    unittest.main()
+# if __name__ == "__main__":
+#     unittest.main()

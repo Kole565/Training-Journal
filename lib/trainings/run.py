@@ -15,14 +15,13 @@ class Run(Training):
         super().__init__(values)
         
         self.type = "run"
-        
-    def fields(self):
-        return super().fields() + ["duration", "distance"]
     
     def values(self):
         return super().values() + [self.duration, self.distance]
     
-    def get_save_stm(self, table):
-        placeholders = len(self.values())
-        stm = super().get_save_stm_by_placeholders_num(table, placeholders)
-        return stm
+    def get_saving_stm(self, table):
+        basis = self.request_to_insert(table)
+        arguments_num = self.get_arguments_num()
+        placeholders = self.placeholders_string(arguments_num)
+
+        return "{0} {1}".format(basis, placeholders)

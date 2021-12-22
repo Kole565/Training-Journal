@@ -6,39 +6,30 @@ class Training():
         self.description = values["description"]
 
         self.type = "other"
-    
-    def fields(self):
-        return ["date", "time", "description"]
 
     def values(self):
         return [self.date, self.time, self.description]
     
-    def get_save_stm(self, table):
-        basis = self.get_stm_basis(table)
-        placeholders = self.format_placeholders_by_num(len(self.values()))
+    def get_saving_stm(self, table):
+        basis = self.request_to_insert(table)
+        arguments_num = self.get_arguments_num()
+        placeholders = self.placeholders_string(arguments_num)
 
         return "{0} {1}".format(basis, placeholders)
     
-    def get_save_stm_by_placeholders_num(self, table, num):
-        basis = self.get_stm_basis(table)
-        placeholders = self.format_placeholders_by_num(num)
-
-        return "{0} {1}".format(basis, placeholders)
-    
-    def get_stm_basis(self, table):
+    def request_to_insert(self, table):
         basis = "INSERT INTO {0} ".format(table)
         basis += "VALUES"
 
         return basis
     
-    def format_placeholders_by_num(self, num):
+    def get_arguments_num(self):
+        return len(self.values())
+    
+    def placeholders_string(self, num):
+        assert num >= 1, "Placeholders amount should be more 0"
+
         placeholders = "({0}?)".format("?, " * (num-1))
 
         return placeholders
-    
-    def placeholders_num(self):
-        return len(self.values())
-
-    def get_save_values(self):
-        return tuple(self.values())
         

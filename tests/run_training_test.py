@@ -32,18 +32,15 @@ class TestRunTraining(unittest.TestCase):
     
     def test_type(self):
         self.assertEqual(self.training.type, "run")
-    
-    def test_fields(self):
-        self.assertEqual(len(self.training.fields()), 5)
         
     def test_values(self):
         self.assertEqual(len(self.training.values()), 5)
     
-    def test_get_save_stm(self):
+    def test_get_saving_stm(self):
         stm = "INSERT INTO {0} VALUES ".format(self.table)
         stm += "(?, ?, ?, ?, ?)"
         
-        self.assertEqual(self.training.get_save_stm(self.table), stm)
+        self.assertEqual(self.training.get_saving_stm(self.table), stm)
 
 
 # if __name__ == "__main__":
