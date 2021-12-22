@@ -20,9 +20,12 @@ class RecordIO():
     def get_and_save(self, name):
         self.input_buffer[name.lower()] = input()
     
-    def show_buffer(self):
+    def show(self):
         for name, value in self.input_buffer.items():
             print("{0}: {1}".format(name.capitalize(), value))
+    
+    def clear(self):
+        self.input_buffer = {}
     
 if __name__ == "__main__":
     recorder = RecordIO()
