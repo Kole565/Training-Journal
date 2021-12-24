@@ -26,13 +26,3 @@ class RecordIO():
     
     def clear(self):
         self.input_buffer = {}
-    
-if __name__ == "__main__":
-    recorder = RecordIO()
-
-    recorder.ask("test")
-    recorder.get_and_save("test")
-
-    recorder.ask_save_multi(["time", "date", "duration"])
-
-    recorder.show_buffer()
