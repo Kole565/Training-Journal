@@ -10,25 +10,30 @@ from lib.record_io import RecordIO
 from lib.training import Training
 from lib.trainings.run import Run
 
+
+DB = ""
 types_to_classes = {
     "other": Training,
     "run": Run
 }
 
-DB = ""
-
 
 if __name__ == "__main__":
-    inp_buffer = RecordIO()
+    print("Avaliable train types for now:")
+    for type in types_to_classes.keys():
+        print("\t{0}".format(type.capitalize()))
+    print()
     
-    inp_buffer.ask("type")
-    inp_buffer.get_and_save("type")
-    train_init_class = types_to_classes[inp_buffer.input_buffer["type"]]
+    train_record = RecordIO()
     
-    inp_buffer.clear()
-    inp_buffer.ask_save_multi(train_init_class.fields())
-    values = inp_buffer.input_buffer
+    train_record.ask("type")
+    train_record.get_and_save("type")
+    new_train = types_to_classes[train_record.input_buffer["type"].lower()]
     
-    train = train_init_class(values)
+    train_record.clear()
+    train_record.ask_save_multi(new_train.fields())
+    values = train_record.input_buffer
+    
+    train = new_train(values)
     record = Record(DB, train.type, train)
     record.save()
