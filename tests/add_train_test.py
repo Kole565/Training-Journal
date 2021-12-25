@@ -7,7 +7,7 @@ sys.path.append(PROJECT_ROOT)
 import unittest
 from io import StringIO
 
-from add_train import *
+from scripts.add_train import *
 
 class TestAddTrain(unittest.TestCase):
     
