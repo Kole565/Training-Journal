@@ -16,7 +16,7 @@ Project don't completed.
 ## Usage
 Open 'scripts' folder; choose script to run; use following instructions.
 #### Adding train
-For add train into database you need to open 'add_train.py' script to begin with.
+For add train into database you need to open 'add_train.py' in 'scripts' folder to begin with.
 Type train information when ask:
 
     Avaliable train types for now:
