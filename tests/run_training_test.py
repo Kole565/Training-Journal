@@ -12,9 +12,7 @@ from lib.trainings.run import Run
 
 class TestRunTraining(unittest.TestCase):
 
-    root = os.path.join(os.path.dirname(__file__), "..")
-
-    path_to_db_folder = root + "/db/"
+    path_to_db_folder = PROJECT_ROOT + "/db/"
     db_name = "temp" 
     table = "runs"
 
