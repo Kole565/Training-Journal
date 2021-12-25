@@ -12,28 +12,51 @@ from lib.trainings.run import Run
 
 
 DB = ""
-types_to_classes = {
+TYPES_TO_CLASSES = {
     "other": Training,
     "run": Run
 }
 
 
-if __name__ == "__main__":
-    print("Avaliable train types for now:")
-    for type in types_to_classes.keys():
-        print("\t{0}".format(type.capitalize()))
+def add_train_by_input():
+    show_types(TYPES_TO_CLASSES.keys())
     print()
     
-    train_record = RecordIO()
+    train = get_type_and_create()
+
+    save(train)
+
+def show_types(types):
+    print("Avaliable types for now:")
+    for type in types:
+        print("\t{0}".format(type.capitalize()))
+
+def get_type_and_create():
+    choosed_train = TYPES_TO_CLASSES[ask_and_get_type().lower()]
+    values = ask_and_get_values(choosed_train.fields())
+    train = choosed_train(values)
+
+    return train
+
+def ask_and_get_type():
+    io = RecordIO()
     
-    train_record.ask("type")
-    train_record.get_and_save("type")
-    new_train = types_to_classes[train_record.input_buffer["type"].lower()]
+    io.ask("type")
+    io.get_and_save("type")
+
+    return io.input_buffer["type"]
+
+def ask_and_get_values(types):
+    io = RecordIO()
     
-    train_record.clear()
-    train_record.ask_save_multi(new_train.fields())
-    values = train_record.input_buffer
-    
-    train = new_train(values)
+    io.ask_save_multi(types)
+
+    return io.input_buffer
+
+def save(train):
     record = Record(DB, train.type, train)
     record.save()
+    
+
+if __name__ == "__main__":
+    add_train_by_input()
