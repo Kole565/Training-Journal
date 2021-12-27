@@ -2,7 +2,7 @@ class RecordIO():
     
     """RecordIO class
     
-    Ask user for training data. Untestable because IO.
+    Ask user for training data.
 
     """
 
@@ -16,6 +16,12 @@ class RecordIO():
 
     def ask(self, name):
         print("Enter {0}:".format(name.capitalize()))
+    
+    def get_and_clear_buffer(self):
+        ret = self.input_buffer
+        self.input_buffer = {}
+
+        return ret
     
     def get_and_save(self, name):
         self.input_buffer[name.lower()] = input()

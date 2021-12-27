@@ -5,22 +5,23 @@ PROJECT_ROOT = os.path.join(os.path.dirname(__file__), "..")
 sys.path.append(PROJECT_ROOT)
 
 import unittest
+from unittest.mock import patch, call
 from io import StringIO
 
 from scripts.add_train import *
 
-class TestAddTrain(unittest.TestCase):
+class TestTrainAdder(unittest.TestCase):
     
     def setUp(self):
-        self.capturedOut = StringIO()
-        sys.stdout = self.capturedOut
+        self.adder = TrainAdder()
+
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_show_types(self, mock_stdout):
+        expected = "Avaliable types for now:\n\tOther\n\tRun\n\n"
+        
+        self.adder.show_types()
+        
+        self.assertEqual(mock_stdout.getvalue(), expected)
     
-    def tearDown(self):
-        sys.stdout = sys.__stdout__
-
-    def test_types_show(self):
-        expected = "Avaliable types for now:\n\tFirst\n\tSecond\n\tThird\n"
-
-        show_types(["first", "second", "third"])
-
-        self.assertEqual(expected, self.capturedOut.getvalue())
+    def test_types(self):
+        self.assertEqual(self.adder.types(), ["other", "run"])

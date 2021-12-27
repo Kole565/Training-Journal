@@ -11,52 +11,56 @@ from lib.training import Training
 from lib.trainings.run import Run
 
 
-DB = ""
-TYPES_TO_CLASSES = {
-    "other": Training,
-    "run": Run
-}
+class TrainAdder():
 
+    DB = ""
+    TYPES_TO_CLASSES = {
+        "other": Training,
+        "run": Run
+    }
 
-def add_train_by_input():
-    show_types(TYPES_TO_CLASSES.keys())
-    print()
+    def __init__(self):
+        self.io = RecordIO()
+        self.train = None
+
+    def show_types(self):
+        print("Avaliable types for now:")
+        for type in self.types():
+            print("\t{0}".format(type.capitalize()))
+        print()
     
-    train = get_type_and_create()
-
-    save(train)
-
-def show_types(types):
-    print("Avaliable types for now:")
-    for type in types:
-        print("\t{0}".format(type.capitalize()))
-
-def get_type_and_create():
-    choosed_train = TYPES_TO_CLASSES[ask_and_get_type().lower()]
-    values = ask_and_get_values(choosed_train.fields())
-    train = choosed_train(values)
-
-    return train
-
-def ask_and_get_type():
-    io = RecordIO()
+    def types(self):
+        return list(self.TYPES_TO_CLASSES.keys())
     
-    io.ask("type")
-    io.get_and_save("type")
-
-    return io.input_buffer["type"]
-
-def ask_and_get_values(types):
-    io = RecordIO()
+    def get_type_and_values(self):
+        self.choosed_train = TYPES_TO_CLASSES[self.ask_and_get_type().lower()]
+        self.values = self.ask_and_get_values(self.choosed_train.fields())
     
-    io.ask_save_multi(types)
+    def ask_and_get_type(self):        
+        self.io.ask("type")
+        self.io.get_and_save("type")
 
-    return io.input_buffer
-
-def save(train):
-    record = Record(DB, train.type, train)
-    record.save()
+        return self.io.get_and_clear_buffer()["type"]
     
+    def ask_and_get_values(self, types):
+        self.io.ask_save_multi(types)
+
+        return self.io.get_and_clear_buffer()
+    
+    def create(self):
+        self.train = self.choosed_train(self.values)
+        
+    def save(self):
+        record = Record(self.DB, self.train.type, self.train)
+        record.save()
+
 
 if __name__ == "__main__":
-    add_train_by_input()
+    adder = TrainAdder()
+
+    adder.show_types()
+    adder.get_type_and_values()
+    adder.create()
+    adder.save()
+
+    input()
