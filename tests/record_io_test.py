@@ -55,17 +55,3 @@ class TestRecordIO(unittest.TestCase):
 
         self.assertEqual(ret, "name")
 
-
-
-# ------------------------------------------------------------------------------
-# This is a much simpler Python 3 solution -- it's easier to use unittest.mock
-# directly on the builtin print function, rather than fiddling around with sys.stdout:
-
-# from unittest.mock import patch, call
-
-# @patch('builtins.print')
-# def test_print(mocked_print):
-#     print('foo')
-#     print()
-
-#     assert mocked_print.mock_calls == [call('foo'), call()]
