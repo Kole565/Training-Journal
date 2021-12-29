@@ -73,7 +73,3 @@ class TestRecord(unittest.TestCase):
                 description text
                 );
             """)
-        
-
-# if __name__ == "__main__":
-#     unittest.main()

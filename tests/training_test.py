@@ -48,7 +48,3 @@ class TestTraining(unittest.TestCase):
     
     def test_get_arguments_num(self):
         self.assertEqual(self.training.get_arguments_num(), 3)
-
-
-# if __name__ == "__main__":
-#     unittest.main()

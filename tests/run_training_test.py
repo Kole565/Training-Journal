@@ -77,6 +77,3 @@ class TestRunTraining(unittest.TestCase):
                 distance text
                 );
             """)
-
-# if __name__ == "__main__":
-#     unittest.main()
