@@ -64,9 +64,9 @@ def show_pretty_record(columns, values, record):
         
 
 if __name__ == "__main__":
-    all = select_all()
+    tables = select_all()
     
-    show_pretty(*all)
+    show_pretty(*tables)
 
     input()
     
