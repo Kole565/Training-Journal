@@ -67,4 +67,6 @@ if __name__ == "__main__":
     all = select_all()
     
     show_pretty(*all)
+
+    input()
     

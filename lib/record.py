@@ -34,8 +34,8 @@ class Record():
         self.cursor = self.connection.cursor()
         
     def execute_with_values(self, stm, values):
-        print(stm)
-        print(values)
+        # print(stm)
+        # print(values)
         return self.cursor.execute(stm, values).fetchall()
     
     def execute(self, stm):
