@@ -16,7 +16,7 @@ class TestRecord(unittest.TestCase):
     path_to_db_folder = root + "/db/"
 
     db_name = "temp"
-    table = "others"
+    table = "other"
 
 
     def setUp(self):
@@ -53,6 +53,7 @@ class TestRecord(unittest.TestCase):
         func(*args, **kwargs)
 
         self.destroy_temp_db_if_exist()
+        # TODO: Manage db_path logic
     
     def destroy_temp_db_if_exist(self):
         if os.path.exists(self.record.db_path()):
@@ -67,7 +68,7 @@ class TestRecord(unittest.TestCase):
         self.record.open_connection()
         self.record.init_cursor()
         self.record.execute("""
-            CREATE TABLE IF NOT EXISTS others (
+            CREATE TABLE IF NOT EXISTS other (
                 date text,
                 time text,
                 description text
