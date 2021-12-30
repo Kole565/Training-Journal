@@ -6,6 +6,11 @@ sys.path.append(PROJECT_ROOT)
 
 from lib.record import Record
 
+# TODO:
+#   Extract script to class
+#   Move them into 'scripts' folder
+#   Test him
+#   Refactor
 
 DB = ""
 TABLES = [

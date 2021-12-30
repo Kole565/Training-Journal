@@ -14,15 +14,16 @@ class Training():
     def values(self):
         return [self.date, self.time, self.description]
     
-    def get_saving_stm(self, table):
-        basis = self.request_to_insert(table)
+    def get_saving_stm(self):
+        basis = self.get_request_to_insert()
         arguments_num = self.get_arguments_num()
-        placeholders = self.placeholders_string(arguments_num)
+        placeholders = self.get_placeholders_string(arguments_num)
 
         return "{0} {1}".format(basis, placeholders)
     
-    def request_to_insert(self, table):
-        basis = "INSERT INTO {0} ".format(table)
+    def get_request_to_insert(self):
+
+        basis = "INSERT INTO {0} ".format(self.type)
         basis += "VALUES"
 
         return basis
@@ -30,8 +31,8 @@ class Training():
     def get_arguments_num(self):
         return len(self.values())
     
-    def placeholders_string(self, num):
-        assert num >= 1, "Placeholders amount should be more 0"
+    def get_placeholders_string(self, num):
+        assert num > 0, "Placeholders amount should be more 0"
 
         placeholders = "({0}?)".format("?, " * (num-1))
 

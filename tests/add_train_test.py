@@ -7,18 +7,16 @@ sys.path.append(PROJECT_ROOT)
 import unittest
 from unittest.mock import patch, call
 
-from lib.training import Training
+from lib.executor import Executor
+
+from lib.trainings.training import Training
 from scripts.add_train import *
 
 
 class TestTrainAdder(unittest.TestCase):
-
-    db_name = "temp"
-    table = "other"
     
     def setUp(self):
         self.adder = TrainAdder()
-        self.record = Record(self.db_name, self.table, None)
 
     @patch("builtins.print")
     def test_show_types(self, mock_print):
@@ -57,10 +55,11 @@ class TestTrainAdder(unittest.TestCase):
         })
 
         self.do_in_temp_db(self.adder.save)
-        # self.do_in_temp_db(self.record.save)
         # TODO: Extract to helper "do_in_temp_db", other
     
+
     def do_in_temp_db(self, func, *args, **kwargs):
+        self.init_executor()
         self.destroy_temp_db_if_exist()
         self.create_temp_db_if_need()
 
@@ -68,23 +67,26 @@ class TestTrainAdder(unittest.TestCase):
 
         self.destroy_temp_db_if_exist()
     
+    def init_executor(self):
+        self.executor = Executor("temp")
+    
     def destroy_temp_db_if_exist(self):
-        if os.path.exists(self.record.db_path()):
-            os.remove(self.record.db_path())
+        if os.path.exists(self.executor.db_path()):
+            os.remove(self.executor.db_path())
     
     def create_temp_db_if_need(self):
-        if os.path.exists(self.record.db_path()):
+        if os.path.exists(self.executor.db_path()):
             return
             
-        open(self.record.db_path(), "w").close()
+        open(self.executor.db_path(), "w").close()
 
-        self.record.open_connection()
-        self.record.init_cursor()
-        self.record.execute("""
+        self.executor.connect()
+        self.executor.execute("""
             CREATE TABLE IF NOT EXISTS other (
                 date text,
                 time text,
                 description text
                 );
             """)
-        self.record.close_connection_and_cursor()
+        self.executor.commit()
+        self.executor.disconnect()

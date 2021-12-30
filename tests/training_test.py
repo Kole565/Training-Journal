@@ -6,7 +6,7 @@ sys.path.append(PROJECT_ROOT)
 
 import unittest
 
-from lib.training import Training
+from lib.trainings.training import Training
 
 
 class TestTraining(unittest.TestCase):
@@ -14,8 +14,6 @@ class TestTraining(unittest.TestCase):
     root = os.path.join(os.path.dirname(__file__), "..")
 
     path_to_db_folder = root + "/db/"
-    db_name = "temp"
-    table = "others"
 
 
     def setUp(self):
@@ -24,27 +22,27 @@ class TestTraining(unittest.TestCase):
             "description": "test training"
         }
 
-        self.training = Training(values)        
+        self.train = Training(values)        
 
     def test_init(self):
-        self.assertTrue(self.training)
+        self.assertTrue(self.train)
     
     def test_init_attrs(self):
-        self.assertEqual(self.training.date, "01.01.2000")
-        self.assertEqual(self.training.time, "10:00")
-        self.assertEqual(self.training.description, "test training")
+        self.assertEqual(self.train.date, "01.01.2000")
+        self.assertEqual(self.train.time, "10:00")
+        self.assertEqual(self.train.description, "test training")
     
     def test_type(self):
-        self.assertEqual(self.training.type, "other")
+        self.assertEqual(self.train.type, "other")
         
     def test_values(self):
-        self.assertEqual(len(self.training.values()), 3)
+        self.assertEqual(len(self.train.values()), 3)
     
     def test_get_saving_stm(self):
-        need = "INSERT INTO {0} VALUES (?, ?, ?)".format(self.table)
-        got = self.training.get_saving_stm(self.table)
+        need = "INSERT INTO {0} VALUES (?, ?, ?)".format(self.train.type)
+        got = self.train.get_saving_stm()
         
         self.assertEqual(need, got)
     
     def test_get_arguments_num(self):
-        self.assertEqual(self.training.get_arguments_num(), 3)
+        self.assertEqual(self.train.get_arguments_num(), 3)

@@ -7,13 +7,12 @@ sys.path.append(PROJECT_ROOT)
 from lib.record import Record
 from lib.record_io import RecordIO
 
-from lib.training import Training
+from lib.trainings.training import Training
 from lib.trainings.run import Run
 
 
 class TrainAdder():
 
-    DB = ""
     TYPES_TO_CLASSES = {
         "other": Training,
         "run": Run
@@ -21,7 +20,6 @@ class TrainAdder():
 
     def __init__(self):
         self.io = RecordIO()
-        self.train = None
 
     def show_types(self):
         msg = "Avaliable types for now:\n"
@@ -44,8 +42,8 @@ class TrainAdder():
 
         return self.io.get_and_return()
     
-    def ask_and_get_values(self, types):
-        self.io.ask_save_multi(types)
+    def ask_and_get_values(self, values):
+        self.io.ask_save_multi(values)
         buffer = self.io.input_buffer
         self.io.clear()
         
@@ -54,8 +52,8 @@ class TrainAdder():
     def create(self):
         self.train = self.choosed_train(self.values)
         
-    def save(self):
-        record = Record(self.DB, self.train.type, self.train)
+    def save(self, db="temp"):
+        record = Record(db, self.train)
         record.save()
 
 
@@ -65,6 +63,6 @@ if __name__ == "__main__":
     adder.show_types()
     adder.get_type_and_values()
     adder.create()
-    adder.save()
+    adder.save("")
 
     input()

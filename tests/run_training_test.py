@@ -13,8 +13,7 @@ from lib.trainings.run import Run
 class TestRunTraining(unittest.TestCase):
 
     path_to_db_folder = PROJECT_ROOT + "/db/"
-    db_name = "temp" 
-    table = "runs"
+    db_name = "temp"
 
     def setUp(self):
         values = {
@@ -22,58 +21,25 @@ class TestRunTraining(unittest.TestCase):
             "description": "test run", "duration": "15:00", "distance": "2 km"
         }
 
-        self.training = Run(values)
-        self.record = Record(self.db_name, self.table, self.training)
+        self.train = Run(values)
+        self.record = Record(self.db_name, self.train)
         
 
     def test_init(self):
-        self.assertTrue(self.training)
+        self.assertTrue(self.train)
     
     def test_init_attrs(self):
-        self.assertEqual(self.training.duration, "15:00")
-        self.assertEqual(self.training.distance, "2 km")
+        self.assertEqual(self.train.duration, "15:00")
+        self.assertEqual(self.train.distance, "2 km")
     
     def test_type(self):
-        self.assertEqual(self.training.type, "run")
+        self.assertEqual(self.train.type, "run")
         
     def test_values(self):
-        self.assertEqual(len(self.training.values()), 5)
+        self.assertEqual(len(self.train.values()), 5)
     
     def test_get_saving_stm(self):
-        stm = "INSERT INTO {0} VALUES ".format(self.table)
+        stm = "INSERT INTO {0} VALUES ".format(self.train.type)
         stm += "(?, ?, ?, ?, ?)"
         
-        self.assertEqual(self.training.get_saving_stm(self.table), stm)
-
-    def test_save(self):
-        self.do_in_temp_db(self.record.save)
-    
-    def do_in_temp_db(self, func, *args, **kwargs):
-        self.destroy_temp_db_if_exist()
-        self.create_temp_db_if_need()
-
-        func(*args, **kwargs)
-
-        self.destroy_temp_db_if_exist()
-    
-    def destroy_temp_db_if_exist(self):
-        if os.path.exists(self.record.db_path()):
-            os.remove(self.record.db_path())
-    
-    def create_temp_db_if_need(self):
-        if os.path.exists(self.record.db_path()):
-            return
-            
-        open(self.record.db_path(), "w").close()
-
-        self.record.open_connection()
-        self.record.init_cursor()
-        self.record.execute("""
-            CREATE TABLE IF NOT EXISTS runs (
-                date text,
-                time text,
-                description text,
-                duration text,
-                distance text
-                );
-            """)
+        self.assertEqual(self.train.get_saving_stm(), stm)

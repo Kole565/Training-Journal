@@ -4,7 +4,7 @@ import sys
 PROJECT_ROOT = os.path.join(os.path.dirname(__file__), "..")
 sys.path.append(PROJECT_ROOT)
 
-from lib.training import Training
+from lib.trainings.training import Training
 
 
 class Run(Training):
@@ -24,9 +24,9 @@ class Run(Training):
     def values(self):
         return super().values() + [self.duration, self.distance]
     
-    def get_saving_stm(self, table):
-        basis = self.request_to_insert(table)
+    def get_saving_stm(self):
+        basis = self.get_request_to_insert()
         arguments_num = self.get_arguments_num()
-        placeholders = self.placeholders_string(arguments_num)
+        placeholders = self.get_placeholders_string(arguments_num)
 
         return "{0} {1}".format(basis, placeholders)
