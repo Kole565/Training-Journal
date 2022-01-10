@@ -12,9 +12,6 @@ from lib.trainings.run import Run
 
 class TestRunTraining(unittest.TestCase):
 
-    path_to_db_folder = PROJECT_ROOT + "/db/"
-    db_name = "temp"
-
     def setUp(self):
         values = {
             "date": "01.01.2000", "time": "10:00", 
@@ -22,7 +19,6 @@ class TestRunTraining(unittest.TestCase):
         }
 
         self.train = Run(values)
-        self.record = Record(self.db_name, self.train)
         
 
     def test_init(self):
@@ -37,9 +33,3 @@ class TestRunTraining(unittest.TestCase):
         
     def test_values(self):
         self.assertEqual(len(self.train.values()), 5)
-    
-    def test_get_saving_stm(self):
-        stm = "INSERT INTO {0} VALUES ".format(self.train.type)
-        stm += "(?, ?, ?, ?, ?)"
-        
-        self.assertEqual(self.train.get_saving_stm(), stm)

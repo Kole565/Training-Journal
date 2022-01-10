@@ -1,11 +1,21 @@
+from datetime import datetime
+
+
 class Training():
 
     def __init__(self, values):
-        self.date = values["date"]
-        self.time = values["time"]
+        self.date = datetime.strptime(values["date"], "%d.%m.%y") 
+        self.time = datetime.strptime(values["time"], "%M:%S").time()
         self.description = values["description"]
 
         self.type = "other"
+    
+    def __str__(self):
+        ret = ""
+        for value in self.values():
+            ret += "{0}\n".format(str(value))
+        
+        return ret
     
     @staticmethod
     def fields():

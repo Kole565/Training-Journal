@@ -1,68 +1,28 @@
+import shelve
+
 import os
 import sys
+
 
 PROJECT_ROOT = os.path.join(os.path.dirname(__file__), "..")
 sys.path.append(PROJECT_ROOT)
 
-from lib.record import Record
-from lib.record_io import RecordIO
-
 from lib.trainings.training import Training
-from lib.trainings.run import Run
+
+DB_FOLDER = os.path.join(PROJECT_ROOT, "db")
 
 
-class TrainAdder():
+values = {
+    "date": "01.01.20", "time": "10:00", 
+    "description": "test training"
+}
 
-    TYPES_TO_CLASSES = {
-        "other": Training,
-        "run": Run
-    }
+train = Training(values)
+id = str(len(shelve.open(DB_FOLDER + "\db")))
 
-    def __init__(self):
-        self.io = RecordIO()
+with shelve.open(DB_FOLDER + "\db") as db:
+    db[id] = train
 
-    def show_types(self):
-        msg = "Avaliable types for now:\n"
-        for type in self.types():
-            msg += "\t{0}\n".format(type.capitalize())
-        msg += "\n"
-        
-        print(msg)
-    
-    def types(self):
-        return list(self.TYPES_TO_CLASSES.keys())
-    
-    def get_type_and_values(self):
-        self.choosed_train = self.TYPES_TO_CLASSES[
-                                                self.ask_and_get_type().lower()]
-        self.values = self.ask_and_get_values(self.choosed_train.fields())
-    
-    def ask_and_get_type(self):        
-        self.io.ask("type")
-
-        return self.io.get_and_return()
-    
-    def ask_and_get_values(self, values):
-        self.io.ask_save_multi(values)
-        buffer = self.io.input_buffer
-        self.io.clear()
-        
-        return buffer
-    
-    def create(self):
-        self.train = self.choosed_train(self.values)
-        
-    def save(self, db="temp"):
-        record = Record(db, self.train)
-        record.save()
-
-
-if __name__ == "__main__":
-    adder = TrainAdder()
-
-    adder.show_types()
-    adder.get_type_and_values()
-    adder.create()
-    adder.save("")
-
-    input()
+    # print("All: ")
+    # for key in db:
+    #     print(key, " - ", str(db[key]))
