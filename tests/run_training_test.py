@@ -6,7 +6,6 @@ sys.path.append(PROJECT_ROOT)
 
 import unittest
 
-from lib.record import Record
 from lib.trainings.run import Run
 
 

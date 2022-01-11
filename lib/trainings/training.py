@@ -4,7 +4,7 @@ from datetime import datetime
 class Training():
 
     def __init__(self, values):
-        self.date = datetime.strptime(values["date"], "%d.%m.%y") 
+        self.date = datetime.strptime(values["date"], "%d.%m.%Y") 
         self.time = datetime.strptime(values["time"], "%M:%S").time()
         self.description = values["description"]
 

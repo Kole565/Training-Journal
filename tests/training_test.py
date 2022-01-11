@@ -4,7 +4,7 @@ import sys
 PROJECT_ROOT = os.path.join(os.path.dirname(__file__), "..")
 sys.path.append(PROJECT_ROOT)
 
-import unittest
+import unittest, datetime
 
 from lib.trainings.training import Training
 
@@ -23,8 +23,8 @@ class TestTraining(unittest.TestCase):
         self.assertTrue(self.train)
     
     def test_init_attrs(self):
-        self.assertEqual(self.train.date, "01.01.2000")
-        self.assertEqual(self.train.time, "10:00")
+        self.assertEqual(self.train.date, datetime.datetime(2000, 1, 1))
+        self.assertEqual(self.train.time, datetime.datetime.strptime("10:00", "%M:%S").time())
         self.assertEqual(self.train.description, "test training")
     
     def test_type(self):
