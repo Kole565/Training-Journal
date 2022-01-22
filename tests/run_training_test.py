@@ -1,5 +1,6 @@
 import os
 import sys
+from datetime import datetime
 
 PROJECT_ROOT = os.path.join(os.path.dirname(__file__), "..")
 sys.path.append(PROJECT_ROOT)
@@ -13,7 +14,7 @@ class TestRunTraining(unittest.TestCase):
 
     def setUp(self):
         values = {
-            "date": "01.01.2000", "time": "10:00", 
+            "date": "01.01.00", "time": "10:00", 
             "description": "test run", "duration": "15:00", "distance": "2 km"
         }
 
@@ -24,7 +25,8 @@ class TestRunTraining(unittest.TestCase):
         self.assertTrue(self.train)
     
     def test_init_attrs(self):
-        self.assertEqual(self.train.duration, "15:00")
+        self.assertEqual(self.train.duration,
+                                    datetime.strptime("15:00", "%M:%S").time())
         self.assertEqual(self.train.distance, "2 km")
     
     def test_type(self):

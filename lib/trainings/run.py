@@ -1,5 +1,6 @@
 import os
 import sys
+from datetime import datetime
 
 PROJECT_ROOT = os.path.join(os.path.dirname(__file__), "..")
 sys.path.append(PROJECT_ROOT)
@@ -10,7 +11,7 @@ from lib.trainings.training import Training
 class Run(Training):
 
     def __init__(self, values):
-        self.duration = values["duration"]
+        self.duration = datetime.strptime(values["duration"], "%M:%S").time()
         self.distance = values["distance"]
         
         super().__init__(values)

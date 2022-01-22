@@ -13,7 +13,7 @@ class TestTraining(unittest.TestCase):
     
     def setUp(self):
         values = {
-            "date": "01.01.2000", "time": "10:00", 
+            "date": "01.01.00", "time": "10:00", 
             "description": "test training"
         }
 
@@ -24,7 +24,8 @@ class TestTraining(unittest.TestCase):
     
     def test_init_attrs(self):
         self.assertEqual(self.train.date, datetime.datetime(2000, 1, 1))
-        self.assertEqual(self.train.time, datetime.datetime.strptime("10:00", "%M:%S").time())
+        self.assertEqual(self.train.time, 
+                            datetime.datetime.strptime("10:00", "%M:%S").time())
         self.assertEqual(self.train.description, "test training")
     
     def test_type(self):
